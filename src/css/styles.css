@@ -66,9 +66,12 @@ h2 { text-align: left; }
 .graph-container {
 	display: inline-block;
 	width: 90%;
-	max-width: 380px;
 	position: relative;
 	margin: 0;
+}
+.graph-container h3 {
+	border-top: 1px solid #EEEEEE;
+	padding-top: 10px;
 }
 
 
@@ -94,3 +97,36 @@ h2 { text-align: left; }
 	border-top: 1px solid #CCCCCC;
 }
 .monster-search ul.monster-list > li:first-child { border: none; }
+
+
+@media (min-width: 600px) {
+	.graph-container {
+		max-width: 380px;
+		margin: 0 20px 20px 20px;
+		border: 1px solid #CCCCCC;
+		border-radius: 15px;
+		padding: 10px;
+		-webkit-box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,0.1);
+		-moz-box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,0.1);
+		box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,0.1);
+	}
+	.graph-container h3 {
+		padding: 0;
+		border: none;
+	}
+
+	ul.monster-list {
+		text-align: center;
+		vertical-align: top;
+	}
+	ul.monster-list > li {
+		text-align: left;
+		width: 300px;
+		border: 1px solid #CCCCCC;
+		border-radius: 5px;
+		margin: 5px;
+	}
+	.monster-search ul.monster-list > li:first-child {
+		border: 1px solid #CCCCCC;
+	}
+}
