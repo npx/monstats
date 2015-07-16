@@ -1,3 +1,4 @@
+// TODO refactor into service
 var whiteStats = ['atk', 'hp', 'rcv'];
 
 function growth(Lv, min, max, maxLv, g) {
@@ -27,7 +28,8 @@ controller('Main', function($scope, $http) {
   $scope.store = {
     monsters: [],
     selected: [],
-    search: ""
+    search: "",
+    loading: true
   };
 
   $scope.addMonster = function(monster) {
@@ -44,22 +46,23 @@ controller('Main', function($scope, $http) {
   };
 
   var loadMonsters = function() {
-    console.log("start loading monsters...");
-
     $http.get('/data/monsters.min.json').
 
       error(function(err, code) {
-        console.log(code, "Cannot load monsters...", err);
+        alert(code, "Cannot load monsters...", err);
       }).
 
       then(function(res) {
         $scope.store.monsters = res.data;
+        $scope.store.loading = false;
       });
   };
 
   loadMonsters();
 }).
 
+
+// TODO keep track of series and dynamically add and remove them
 directive('monsterGraph', function() {
   return {
     restrict: 'E',

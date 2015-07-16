@@ -4,7 +4,7 @@
 	<meta charset=utf-8 />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-	<title>ComPAD</title>
+	<title>MonStats - A puzzle and dragons monster stat comparison tool (beta)</title>
 
 	<link rel="stylesheet" type="text/css" media="screen" href="/src/css/styles.css" />
 
@@ -21,51 +21,58 @@
 	<script type="text/javascript" src="src/js/app.js"></script>
 </head>
 <body ng-app="App" ng-controller="Main">
-	<div class="monster-search">
-		<input class="search" type="text" ng-model="store.search" placeholder="Search: Enter a Monstername...">
-
-		<ul class="monster-list" ng-show="store.search.length >= 3">
-			<li ng-repeat="monster in store.monsters | byName:store.search | limitTo: 10" ng-click="addMonster(monster)" prevent-default>
-				<img ng-src="http://www.padherder.com{{monster.image60_href}}">
-				<span class="monster-name">{{monster.name}}</span>
-				<span class="btn" ng-click="addMonster(monster)" prevent-default>add</span>
-			</li>
-		</ul>
+	<div ng-show="store.loading" class="narrow">
+		<h3>Loading...</h3>
+		Please be patient while the monster database is being fetched :3
 	</div>
 
-	<div class="monster-box">
-		<h2 class="narrow">Monster List <span ng-show="store.selected.length > 0">- {{store.selected.length}}</span></h2>
-		<p class="narrow"ng-hide="store.selected.length > 0">
-			Use the search to find monsters to add to your comparison.
-		</p>
-		<ul class="monster-list" ng-show="store.selected.length > 0">
-			<li ng-repeat="monster in store.selected">
-				<img ng-src="http://www.padherder.com{{monster.image60_href}}">
-				<span class="monster-name">{{monster.name}}</span>
-				<span class="btn" ng-click="delMonster(monster)">del</span>
-			</li>
-		</ul>
-	</div>
+	<div ng-hide="store.loading">
+		<div class="monster-search">
+			<input class="search" type="text" ng-model="store.search" placeholder="Search: Enter a Monstername...">
 
-	<hr class="show-small section-sep">
+			<ul class="monster-list" ng-show="store.search.length >= 3">
+				<li ng-repeat="monster in store.monsters | byName:store.search | limitTo: 10" ng-click="addMonster(monster)" prevent-default>
+					<img ng-src="http://www.padherder.com{{monster.image60_href}}">
+					<span class="monster-name">{{monster.name}}</span>
+					<span class="btn" ng-click="addMonster(monster)" prevent-default>add</span>
+				</li>
+			</ul>
+		</div>
 
-	<div class="graph-section" ng-show="store.selected.length > 0">
-		<h2 class="narrow">Statistics</h2>
+		<div class="monster-box">
+			<h2 class="narrow">Monster List <span ng-show="store.selected.length > 0">- {{store.selected.length}}</span></h2>
+			<p class="narrow"ng-hide="store.selected.length > 0">
+				Use the search to find monsters to add to your comparison.
+			</p>
+			<ul class="monster-list" ng-show="store.selected.length > 0">
+				<li ng-repeat="monster in store.selected">
+					<img ng-src="http://www.padherder.com{{monster.image60_href}}">
+					<span class="monster-name">{{monster.name}}</span>
+					<span class="btn" ng-click="delMonster(monster)">del</span>
+				</li>
+			</ul>
+		</div>
 
-		<span class="graph-container">
-			<h3>ATK</h3>
-			<monster-graph monsters="store.selected" stat="atk"></monster-graph>
-		</span>
+		<hr class="show-small section-sep">
 
-		<span class="graph-container">
-			<h3>HP</h3>
-			<monster-graph monsters="store.selected" stat="hp"></monster-graph>
-		</span>
+		<div class="graph-section" ng-show="store.selected.length > 0">
+			<h2 class="narrow">Statistics</h2>
 
-		<span class="graph-container">
-			<h3>RCV</h3>
-			<monster-graph monsters="store.selected" stat="rcv"></monster-graph>
-		</span>
+			<span class="graph-container">
+				<h3>ATK</h3>
+				<monster-graph monsters="store.selected" stat="atk"></monster-graph>
+			</span>
+
+			<span class="graph-container">
+				<h3>HP</h3>
+				<monster-graph monsters="store.selected" stat="hp"></monster-graph>
+			</span>
+
+			<span class="graph-container">
+				<h3>RCV</h3>
+				<monster-graph monsters="store.selected" stat="rcv"></monster-graph>
+			</span>
+		</div>
 	</div>
 </body>
 </html>
