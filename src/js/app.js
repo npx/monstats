@@ -46,7 +46,7 @@ controller('Main', function($scope, $http) {
   };
 
   var loadMonsters = function() {
-    $http.get('/data/monsters.min.json').
+    $http.get('data/monsters.min.json').
 
       error(function(err, code) {
         alert(code, "Cannot load monsters...", err);
