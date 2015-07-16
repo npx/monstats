@@ -95,6 +95,8 @@ h2 { text-align: left; }
 	border: none;
 	border-bottom: 2px solid #CCCCCC;
 	background-color: #EEEEEE;
+	-webkit-appearance: none;
+	border-radius: 0;
 }
 
 .monster-search ul.monster-list {
