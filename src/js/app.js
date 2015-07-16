@@ -152,4 +152,14 @@ directive('preventDefault', function() {
             event.stopPropagation();
         });
     };
+}).
+
+filter('byName', function() {
+  return function(monsters, q) {
+    if ((!(monsters)) || (!(q)) || (q.length < 3))
+      return [];
+    return monsters.filter(function(m) {
+      return m.name.toLowerCase().indexOf(q.toLowerCase()) > -1;
+    });
+  };
 });

@@ -25,7 +25,7 @@
 		<input class="search" type="text" ng-model="store.search" placeholder="Search: Enter a Monstername...">
 
 		<ul class="monster-list" ng-show="store.search.length >= 3">
-			<li ng-repeat="monster in store.monsters | filter:store.search | limitTo: 10" ng-click="addMonster(monster)" prevent-default>
+			<li ng-repeat="monster in store.monsters | byName:store.search | limitTo: 10" ng-click="addMonster(monster)" prevent-default>
 				<img ng-src="http://www.padherder.com{{monster.image60_href}}">
 				<span class="monster-name">{{monster.name}}</span>
 				<span class="btn" ng-click="addMonster(monster)" prevent-default>add</span>
