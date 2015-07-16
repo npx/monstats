@@ -42,11 +42,12 @@ ul.monster-list > li {
 	vertical-align: middle;
 
 	width: 100%;
-	height: 50px;
+	height: 40px;
 
 	line-height: 30px;
 
-	padding: 10px 50px;
+	padding: 5px 50px;
+	text-align: left;
 }
 ul.monster-list > li > .monster-name {
 	font-size: 13px;
@@ -61,28 +62,40 @@ ul.monster-list > li > img {
 	width: 30px;
 	height: 30px;
 	left: 10px;
-	top: 10px;
+	top: 5px;
 }
 ul.monster-list > li > .btn {
 	position: absolute;
 	right: 10px;
-	top: 10px;
+	top: 5px;
 }
 
 
 /* Page */
-h2 { text-align: left; }
 .narrow { padding: 0 10px; }
-.graph-section { text-align: center; }
+.graph-section, .monster-box { text-align: center; }
+hr.section-sep {
+	width: 300px;
+	border: 0;
+    height: 1px;
+    background: #CCCCCC;
+	margin: 25px auto;
+}
 .graph-container {
 	display: inline-block;
 	width: 90%;
 	position: relative;
-	margin: 0;
+	margin: 0 0 30px 0;
 }
 .graph-container h3 {
-	border-top: 1px solid #EEEEEE;
-	padding-top: 10px;
+	padding: 10px;
+	display: block;
+	border: 1px solid #CCCCCC;
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,0.1);
+	-moz-box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,0.1);
+	box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,0.1);
+	margin: 5px;
 }
 
 
@@ -99,6 +112,9 @@ h2 { text-align: left; }
 	border-radius: 0;
 }
 
+h1, h2 {
+	font-weight: normal;
+}
 .monster-search ul.monster-list {
 	border-bottom: 2px solid #CCCCCC;
 	-webkit-box-shadow: 0px 18px 29px -20px rgba(0,0,0,0.75);
@@ -108,10 +124,15 @@ h2 { text-align: left; }
 .monster-search ul.monster-list > li {
 	background-color: #EEEEEE;
 	border-top: 1px solid #CCCCCC;
+	cursor: pointer;
+}
+.monster-search ul.monster-list > li:hover {
+	background-color: #E9E9E9;
 }
 .monster-search ul.monster-list > li:first-child { border: none; }
 
-
+@media (max-width: 600px) { .hide-small { display: none; } }
+@media (min-width: 601px) { .show-small { display: none; } }
 @media (min-width: 600px) {
 	.graph-container {
 		max-width: 380px;
@@ -123,9 +144,16 @@ h2 { text-align: left; }
 		-moz-box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,0.1);
 		box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,0.1);
 	}
+
 	.graph-container h3 {
-		padding: 0;
+		padding: 10px;
+		display: block;
 		border: none;
+
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		box-shadow: none;
+		margin: 0;
 	}
 
 	ul.monster-list {
@@ -138,8 +166,13 @@ h2 { text-align: left; }
 		border: 1px solid #CCCCCC;
 		border-radius: 5px;
 		margin: 5px;
+		padding: 10px 50px;
+		height: 50px;
 	}
 	.monster-search ul.monster-list > li:first-child {
 		border: 1px solid #CCCCCC;
+	}
+	ul.monster-list > li > img, ul.monster-list > li > .btn {
+		top: 10px;
 	}
 }

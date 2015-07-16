@@ -25,18 +25,18 @@
 		<input class="search" type="text" ng-model="store.search" placeholder="Search: Enter a Monstername...">
 
 		<ul class="monster-list" ng-show="store.search.length >= 3">
-			<li ng-repeat="monster in store.monsters | filter:store.search | limitTo: 10">
+			<li ng-repeat="monster in store.monsters | filter:store.search | limitTo: 10" ng-click="addMonster(monster)" prevent-default>
 				<img ng-src="http://www.padherder.com{{monster.image60_href}}">
 				<span class="monster-name">{{monster.name}}</span>
-				<span class="btn" ng-click="addMonster(monster)">add</span>
+				<span class="btn" ng-click="addMonster(monster)" prevent-default>add</span>
 			</li>
 		</ul>
 	</div>
 
 	<div class="monster-box">
-		<h2 class="narrow">Monster List ({{store.selected.length}})</h2>
+		<h2 class="narrow">Monster List <span ng-show="store.selected.length > 0">- {{store.selected.length}}</span></h2>
 		<p class="narrow"ng-hide="store.selected.length > 0">
-			Use the search to find monsters to add to your comparision.
+			Use the search to find monsters to add to your comparison.
 		</p>
 		<ul class="monster-list" ng-show="store.selected.length > 0">
 			<li ng-repeat="monster in store.selected">
@@ -47,8 +47,11 @@
 		</ul>
 	</div>
 
+	<hr class="show-small section-sep">
+
 	<div class="graph-section" ng-show="store.selected.length > 0">
 		<h2 class="narrow">Statistics</h2>
+
 		<span class="graph-container">
 			<h3>ATK</h3>
 			<monster-graph monsters="store.selected" stat="atk"></monster-graph>
