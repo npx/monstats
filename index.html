@@ -17,33 +17,50 @@
 
 	<!-- Load App -->
 	<script type="text/javascript" src="src/js/app.js"></script>
-
-	<style>
-		.graph {
-			min-width: 310px;
-			height: 400px;
-			margin: 0 auto;
-		}
-	</style>
 </head>
 <body ng-app="App" ng-controller="Main">
-	<ul>
-		<li ng-repeat="monster in store.monsters">
-			{{monster.name}} (<span ng-click="addMonster(monster)">Add</span>)
-		</li>
-	</ul>
+	<div class="monster-search">
+		<input class="search" type="text" ng-model="store.search" placeholder="Search: Enter a Monstername...">
 
-	<hr>
+		<ul class="monster-list" ng-show="store.search.length >= 3">
+			<li ng-repeat="monster in store.monsters | filter:store.search | orderBy:'name' | limitTo: 10">
+				<img ng-src="http://www.padherder.com{{monster.image60_href}}">
+				<span>{{monster.name}}</span>
+				<span class="btn" ng-click="addMonster(monster)">add</span>
+			</li>
+		</ul>
+	</div>
 
-	<ul>
-		<li ng-repeat="monster in store.selected">
-			{{monster.name}} (<span ng-click="delMonster(monster)">Del</span>)
-		</li>
-	</ul>
+	<div class="monster-box">
+		<h2 class="narrow">Monster List ({{store.selected.length}})</h2>
+		<p class="narrow"ng-hide="store.selected.length > 0">
+			Use the search to find monsters to add to your comparision.
+		</p>
+		<ul class="monster-list" ng-show="store.selected.length > 0">
+			<li ng-repeat="monster in store.selected">
+				<img ng-src="http://www.padherder.com{{monster.image60_href}}">
+				<span>{{monster.name}}</span>
+				<span class="btn" ng-click="delMonster(monster)">del</span>
+			</li>
+		</ul>
+	</div>
 
-	<hr>
+	<div class="graph-section" ng-show="store.selected.length > 0">
+		<h2 class="narrow">Statistics</h2>
+		<span class="graph-container">
+			<h3>ATK</h3>
+			<monster-graph monsters="store.selected" stat="atk"></monster-graph>
+		</span>
 
-	<span class="graph" stat-graph="store.selected" stat="atk"></span>
+		<span class="graph-container">
+			<h3>HP</h3>
+			<monster-graph monsters="store.selected" stat="hp"></monster-graph>
+		</span>
 
+		<span class="graph-container">
+			<h3>RCV</h3>
+			<monster-graph monsters="store.selected" stat="rcv"></monster-graph>
+		</span>
+	</div>
 </body>
 </html>

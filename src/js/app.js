@@ -1,7 +1,7 @@
 var whiteStats = ['atk', 'hp', 'rcv'];
 
 function growth(Lv, min, max, maxLv, g) {
-  return (min + (max - min) * Math.pow((Lv - 1) / (maxLv - 1), g));
+  return Math.round(min + (max - min) * Math.pow((Lv - 1) / (maxLv - 1), g));
 }
 
 function monster2graph(monster, stat) {
@@ -26,12 +26,15 @@ angular.module('App', []).
 controller('Main', function($scope, $http) {
   $scope.store = {
     monsters: [],
-    selected: []
+    selected: [],
+    search: ""
   };
 
   $scope.addMonster = function(monster) {
-    if ($scope.store.selected.indexOf(monster) < 0)
+    if ($scope.store.selected.indexOf(monster) < 0) {
       $scope.store.selected.push(monster);
+      $scope.store.search = "";
+    }
   };
 
   $scope.delMonster = function(monster) {
@@ -50,20 +53,19 @@ controller('Main', function($scope, $http) {
       }).
 
       then(function(res) {
-        $scope.store.monsters = res.data.filter(function(monster) {
-          return (monster.name.indexOf("Shiva") > -1);
-        });
+        $scope.store.monsters = res.data;
       });
   };
 
   loadMonsters();
 }).
 
-directive('statGraph', function() {
+directive('monsterGraph', function() {
   return {
-    restrict: 'A',
-    scope: { data: '=statGraph', stat: '@' },
-    template: '<div id="container" style="height: 300px"></div>',
+    restrict: 'E',
+    scope: { data: '=monsters', stat: '@' },
+    template: '<div></div>',
+    replace: true,
     link: function(scope, element, attrs) {
       // set type of stat
       var stat = whiteStats[0];
@@ -71,6 +73,67 @@ directive('statGraph', function() {
         stat = attrs.stat;
 
 
+      // configure the chart
+      var canvas = element[0];
+      var xlabels = [];
+      for (var i = 1; i < 100; i++) { xlabels.push(""+i); }
+      var chart = new Highcharts.Chart({
+        chart: { renderTo: canvas },
+        title: { text: '', },
+        xAxis: { categories: xlabels },
+        yAxis: {
+          title: { text: "" },
+          plotLines: [
+            { value: 0, width: 1, color: '#808080' },
+            { value: 0, width: 1, color: '#FF0000' }
+          ]
+        },
+        plotOptions: {
+          series: {
+            marker: { enabled: false }
+          }
+        },
+        tooltip: {
+          // formatter: function() {
+          //     var s = [];
+          //
+          //     angular.forEach(this.points, function(point) {
+          //       s.push('<span style="color:#D31B22;font-weight:bold;">'+ point.series.name +' : '+ point.y +'</span>');
+          //     });
+          //
+          //     return s.join('<br/>');
+          // },
+          shared: true
+        },
+        legend: {
+          labelFormatter: function () {
+            return this.name + " <em>x</em>";
+          },
+          layout: "vertical",
+          itemMarginTop: 1,
+          itemMarginBottom: 1,
+          verticalAlign: "top"
+        },
+        series: [],
+        credits: false
+      });
+
+
+      var drawChart = function (monsters) {
+        while(chart.series.length > 0)
+          chart.series[0].remove(true);
+
+        angular.forEach(monsters, function(monster){
+          var s = {};
+          s.name = monster.name;
+          s.data = monster2graph(monster, stat);
+          chart.addSeries(s, false);
+        });
+        chart.redraw();
+      };
+
+
+      // get the canvas
       // watch for changes in data
       scope.$watchCollection('data', function(monsters) {
         if ((monsters) && (monsters.length > 0)) {
@@ -78,51 +141,6 @@ directive('statGraph', function() {
         }
       });
 
-      var drawChart = function (monsters) {
-        console.log("draw...");
-        var xlabels = [];
-        for (var i = 1; i < 100; i++) { xlabels.push(""+i); }
-
-        var monster = monsters[0];
-
-        var myLineChart = new Highcharts.Chart({
-          chart: {
-            renderTo: 'container',
-          },
-          title: {
-            text: 'Monthly Average Temperature',
-            x: -20 //center
-          },
-          subtitle: {
-            text: 'Source: WorldClimate.com',
-            x: -20
-          },
-          xAxis: {
-            categories: xlabels
-          },
-          yAxis: {
-            title: {
-              text: stat
-            },
-            plotLines: [{
-              value: 0,
-              width: 1,
-              color: '#808080'
-            }]
-          },
-          tooltip: {},
-          legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle',
-            borderWidth: 0
-          },
-          series: [{
-            name: 'Tokyo',
-            data: monster2graph(monster, stat)
-          }]
-        });
-      };
-    }
+    }  // link function end
   };
 });
