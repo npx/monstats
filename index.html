@@ -25,7 +25,7 @@
 		<ul class="monster-list" ng-show="store.search.length >= 3">
 			<li ng-repeat="monster in store.monsters | filter:store.search | orderBy:'name' | limitTo: 10">
 				<img ng-src="http://www.padherder.com{{monster.image60_href}}">
-				<span>{{monster.name}}</span>
+				<span class="monster-name">{{monster.name}}</span>
 				<span class="btn" ng-click="addMonster(monster)">add</span>
 			</li>
 		</ul>
@@ -39,7 +39,7 @@
 		<ul class="monster-list" ng-show="store.selected.length > 0">
 			<li ng-repeat="monster in store.selected">
 				<img ng-src="http://www.padherder.com{{monster.image60_href}}">
-				<span>{{monster.name}}</span>
+				<span class="monster-name">{{monster.name}}</span>
 				<span class="btn" ng-click="delMonster(monster)">del</span>
 			</li>
 		</ul>

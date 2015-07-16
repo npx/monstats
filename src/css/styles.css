@@ -39,12 +39,23 @@ ul.monster-list {
 ul.monster-list > li {
 	display: inline-block;
 	position: relative;
+	vertical-align: middle;
 
 	width: 100%;
-	min-height: 50px;
+	height: 50px;
+
+	line-height: 30px;
 
 	padding: 10px 50px;
 }
+ul.monster-list > li > .monster-name {
+	font-size: 13px;
+	line-height: 13px;
+
+	display: inline-block;
+	vertical-align: middle;
+}
+
 ul.monster-list > li > img {
 	position: absolute;
 	width: 30px;
