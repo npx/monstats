@@ -3,9 +3,9 @@ html {
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
-body {
+html, body {
 	margin: 0;
-	padding: 0;
+	height: 100%;
 	font-size: 16px;
 	font-family: Helvetica, Arial, sans-serif;
 }
@@ -14,7 +14,21 @@ body {
 	-moz-box-sizing: inherit;
 	box-sizing: inherit;
 }
-
+.content {
+	min-height: 100%;
+	padding-bottom: 50px;
+	position: relative;
+}
+.credits {
+	font-size: 10px;
+	position:absolute;
+	bottom:0;
+	height: 49px;
+	padding: 5px;
+	text-align: center;
+	border-top: 1px solid #EFEFEF;
+	width: 100%;
+}
 
 /* Utility */
 .btn {

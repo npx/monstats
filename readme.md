@@ -5,7 +5,9 @@ this simple and mobile friendly tool.
 
 ## Credit
 Images and Monster data fetched from https://www.padherder.com/ without
-permission
+permission.
+
+Images and Puzzle and Dragons are from GungHo Online Entertainment, Inc. used without permission.
 
 ## TODO
 A lot can be done to improve the general UX.
