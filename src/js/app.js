@@ -1,5 +1,65 @@
 angular.module('App', []).
 
+service('MonsterDB', function($q, $http) {
+  // check if local storage is supported in the client's browser
+  var lsAvailable = function() {
+    try {
+      return 'localStorage' in window && window.localStorage !== null;
+    } catch(e){
+      return false;
+    }
+  };
+
+  // try to load monster data from local storage if possible
+  var loadFromCache = function() {
+    var deferred = $q.defer();
+
+    if (!lsAvailable()) {
+      deferred.reject('HTML5 localstorage not supported');
+      return deferred.promise;
+    }
+
+    var monsters = localStorage.getItem('monsters');
+    var cached = localStorage.getItem('cachedOn');
+    if (monsters && cached) {
+      var res = { data: JSON.parse(monsters), cached: parseInt(cached) };
+      deferred.resolve(res);
+    } else {
+      deferred.reject('Nothing in cache, yet');
+    }
+
+    return deferred.promise;
+  };
+
+  // try to load monster data from server
+  var loadFromServer = function() {
+    return $http.get('data/monsters.min.json').
+      success(function(res) {
+        if (lsAvailable()) {
+          var time = Math.floor(Date.now() / 1000);
+          localStorage.setItem('monsters', JSON.stringify(res));
+          localStorage.setItem('cachedOn', time);
+        }
+      }).
+      error(function(err) {
+        return err;
+      });
+  };
+  this.forceLoad = loadFromServer;
+
+  // expose loading of monster in service
+  this.load = function() {
+    var onSuccess = function(res) {
+      return res;
+    };
+    var onError = function(err) {
+      return loadFromServer();
+    };
+    return loadFromCache().then(onSuccess, onError);
+  };
+
+}).
+
 service('MonsterBox', function() {
   this.monsters = [];
 
@@ -15,34 +75,50 @@ service('MonsterBox', function() {
   };
 }).
 
-controller('Main', function($scope, $http, MonsterBox) {
+controller('Main', function($scope, MonsterBox, MonsterDB) {
+  // Expose to the scope
   $scope.store = {
     monsters: [],
     search: "",
     selected: MonsterBox.monsters,
     loading: true,
-    error: null
+    error: null,
+    cached: null
   };
 
+  // Control the MonsterBox
   $scope.addMonster = function(monster) {
     MonsterBox.add(monster);
     $scope.store.search = "";
   };
-
   $scope.delMonster = MonsterBox.del;
 
-  var loadMonsters = function() {
-    $http.get('data/monsters.min.json').
+  $scope.reload = function() { loadMonsters(true); };
 
-      error(function(err, code) {
-        $scope.store.error = "Cannot load Monster DB :c";
-      }).
+  // Initialize the MonsterDB
+  var loadMonsters = function(force) {
+    var store = $scope.store;
 
-      then(function(res) { $scope.store.monsters = res.data; }).
+    // response handling
+    var success = function(res) {
+      store.monsters = res.data;
+      if ('cached' in res) store.cached = res.cached;
+    };
+    var error = function(err) { store.error = "Cannot load Monster DB :c"; };
 
-      finally(function () { $scope.store.loading = false; });
+    // move
+    store.loading = true;
+    store.error = null;
+    store.cached = null;
+
+    // load normally or force reload
+    var loadingMethod = force ? MonsterDB.forceLoad() : MonsterDB.load();
+
+    // attach handlers
+    loadingMethod.
+      then(success, error).
+      finally(function () { store.loading = false; });
   };
-
   loadMonsters();
 }).
 
