@@ -1,37 +1,46 @@
 angular.module('App', []).
 
-controller('Main', function($scope, $http) {
+service('MonsterBox', function() {
+  this.monsters = [];
+
+  this.add = function(monster) {
+    if (this.monsters.indexOf(monster) < 0)
+      this.monsters.push(monster);
+  };
+
+  this.del = function(monster) {
+    var idx = this.monsters.indexOf(monster);
+    if (idx > -1)
+      this.monsters.splice(idx, 1);
+  };
+}).
+
+controller('Main', function($scope, $http, MonsterBox) {
   $scope.store = {
     monsters: [],
-    selected: [],
     search: "",
-    loading: true
+    selected: MonsterBox.monsters,
+    loading: true,
+    error: null
   };
 
   $scope.addMonster = function(monster) {
-    if ($scope.store.selected.indexOf(monster) < 0) {
-      $scope.store.selected.push(monster);
-      $scope.store.search = "";
-    }
+    MonsterBox.add(monster);
+    $scope.store.search = "";
   };
 
-  $scope.delMonster = function(monster) {
-    var idx = $scope.store.selected.indexOf(monster);
-    if (idx > -1)
-      $scope.store.selected.splice(idx, 1);
-  };
+  $scope.delMonster = MonsterBox.del;
 
   var loadMonsters = function() {
     $http.get('data/monsters.min.json').
 
       error(function(err, code) {
-        alert(code, "Cannot load monsters...", err);
+        $scope.store.error = "Cannot load Monster DB :c";
       }).
 
-      then(function(res) {
-        $scope.store.monsters = res.data;
-        $scope.store.loading = false;
-      });
+      then(function(res) { $scope.store.monsters = res.data; }).
+
+      finally(function () { $scope.store.loading = false; });
   };
 
   loadMonsters();

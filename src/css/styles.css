@@ -18,6 +18,8 @@ html, body {
 	min-height: 100%;
 	padding-bottom: 50px;
 	position: relative;
+	overflow: auto;
+	text-align: center;
 }
 .credits {
 	font-size: 10px;

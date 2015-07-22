@@ -22,12 +22,17 @@
 </head>
 <body ng-app="App" ng-controller="Main">
 	<div class="content">
-		<div ng-show="store.loading" class="narrow">
+		<div ng-if="store.loading" class="narrow">
 			<h2>Loading...</h2>
 			Please be patient while the monster database is being fetched :3
 		</div>
 
-		<div ng-hide="store.loading">
+		<div ng-if="store.error" class="narrow">
+			<h2>Error...</h2>
+			{{store.error}}
+		</div>
+
+		<div ng-hide="store.loading || store.error">
 			<div class="monster-search">
 				<input class="search" type="text" ng-model="store.search" placeholder="Search: Enter a Monstername...">
 
