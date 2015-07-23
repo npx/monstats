@@ -6,7 +6,7 @@
 
 	<title>MonStats - A puzzle and dragons monster stat comparison tool (beta)</title>
 
-	<link rel="stylesheet" type="text/css" media="screen" href="src/css/styles.7cec18837a102e84.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="src/css/styles.css" />
 
 	<!-- Load Libraries -->
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
@@ -18,7 +18,12 @@
 	<![endif]-->
 
 	<!-- Load App -->
-	<script src="src/js/dist/monstats.min.a3cca058a64c21cf.js"></script>
+	<!-- build:js src/js/dist/monstats.min.js -->
+	<script type="text/javascript" src="src/js/app.js"></script>
+	<script type="text/javascript" src="src/js/graph.js"></script>
+	<script type="text/javascript" src="src/js/services.js"></script>
+	<script type="text/javascript" src="src/js/utils.js"></script>
+	<!-- endbuild -->
 </head>
 <body ng-app="Monstats" ng-controller="Main">
 	<div class="content">
