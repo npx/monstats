@@ -1,7 +1,18 @@
+/**
+ * The Monstats App
+ *
+ * @author npx 2015
+ */
 angular.module('App', []).
 
+
+/**
+ * Handling the Monster information
+ */
 service('MonsterDB', function($q, $http) {
-  // check if local storage is supported in the client's browser
+  /**
+   * check if local storage is supported in the client's browser
+   */
   var lsAvailable = function() {
     try {
       return 'localStorage' in window && window.localStorage !== null;
@@ -10,7 +21,20 @@ service('MonsterDB', function($q, $http) {
     }
   };
 
-  // try to load monster data from local storage if possible
+  /**
+   * store monsters in local storage if available
+   */
+  var storeMonsters = function(monsters) {
+    if (lsAvailable()) {
+      var time = Math.floor(Date.now() / 1000);
+      localStorage.setItem('monsters', JSON.stringify(monsters));
+      localStorage.setItem('cachedOn', time);
+    }
+  };
+
+  /**
+   * try to load monster data from local storage if possible
+   */
   var loadFromCache = function() {
     var deferred = $q.defer();
 
@@ -22,7 +46,7 @@ service('MonsterDB', function($q, $http) {
     var monsters = localStorage.getItem('monsters');
     var cached = localStorage.getItem('cachedOn');
     if (monsters && cached) {
-      var res = { data: JSON.parse(monsters), cached: parseInt(cached) };
+      var res = { monsters: JSON.parse(monsters), cached: parseInt(cached) };
       deferred.resolve(res);
     } else {
       deferred.reject('Nothing in cache, yet');
@@ -31,35 +55,34 @@ service('MonsterDB', function($q, $http) {
     return deferred.promise;
   };
 
-  // try to load monster data from server
+  /**
+   * try to load monster data from server
+   */
   var loadFromServer = function() {
     return $http.get('data/monsters.min.json').
-      success(function(res) {
-        if (lsAvailable()) {
-          var time = Math.floor(Date.now() / 1000);
-          localStorage.setItem('monsters', JSON.stringify(res));
-          localStorage.setItem('cachedOn', time);
-        }
-      }).
-      error(function(err) {
-        return err;
-      });
+      // on success, try to cache
+      success(function(res) { storeMonsters(res); }).
+      then(function(res){ return { monsters: res.data }; });
   };
+  // offer method to load from server to refresh cache
   this.forceLoad = loadFromServer;
 
-  // expose loading of monster in service
+
+  /**
+   * expose loading of monster in service
+   */
   this.load = function() {
-    var onSuccess = function(res) {
-      return res;
-    };
-    var onError = function(err) {
-      return loadFromServer();
-    };
+    var onSuccess = function(res) { return res; };
+    var onError = function(err) { return loadFromServer(); };
+
     return loadFromCache().then(onSuccess, onError);
   };
-
 }).
 
+
+/**
+ * The MonsterBox that contains the monsters the stats are computed on
+ */
 service('MonsterBox', function() {
   this.monsters = [];
 
@@ -75,6 +98,10 @@ service('MonsterBox', function() {
   };
 }).
 
+
+/**
+ * The Main UI controller
+ */
 controller('Main', function($scope, MonsterBox, MonsterDB) {
   // Expose to the scope
   $scope.store = {
@@ -86,6 +113,7 @@ controller('Main', function($scope, MonsterBox, MonsterDB) {
     cached: null
   };
 
+
   // Control the MonsterBox
   $scope.addMonster = function(monster) {
     MonsterBox.add(monster);
@@ -94,8 +122,10 @@ controller('Main', function($scope, MonsterBox, MonsterDB) {
   $scope.delMonster = function(monster) {
     MonsterBox.del(monster);
   };
+  $scope.reload = function() {
+    loadMonsters(true);
+  };
 
-  $scope.reload = function() { loadMonsters(true); };
 
   // Initialize the MonsterDB
   var loadMonsters = function(force) {
@@ -103,7 +133,7 @@ controller('Main', function($scope, MonsterBox, MonsterDB) {
 
     // response handling
     var success = function(res) {
-      store.monsters = res.data;
+      store.monsters = res.monsters;
       if ('cached' in res) store.cached = res.cached;
     };
     var error = function(err) { store.error = "Cannot load Monster DB :c"; };
@@ -125,6 +155,9 @@ controller('Main', function($scope, MonsterBox, MonsterDB) {
 }).
 
 
+/**
+ * Directive that paints a growth graph for a given list of monsters
+ */
 // TODO keep track of series and dynamically add and remove them
 directive('monsterGraph', function(Growth) {
   return {
