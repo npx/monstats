@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset=utf-8 />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+	<title>MonStats - A puzzle and dragons monster stat comparison tool (beta)</title>
+
+	<link rel="stylesheet" type="text/css" media="screen" href="src/css/styles.css" />
+
+	<!-- Load Libraries -->
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
+	<script type="text/javascript" src="lib/HighchartsAdapter.js"></script>
+	<script type="text/javascript" src="http://code.highcharts.com/highcharts.src.js"></script>
+
+	<!--[if IE]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+	<!-- Load App -->
+	<!-- build:js src/js/dist/monstats.min.js -->
+	<script type="text/javascript" src="src/js/app.js"></script>
+	<!-- endbuild -->
+</head>
+<body ng-app="App" ng-controller="Main">
+	<div class="content">
+		<div ng-if="store.loading" class="narrow">
+			<h2>Loading...</h2>
+			Please be patient while the monster database is being fetched :3
+		</div>
+
+		<div ng-if="store.error" class="narrow">
+			<h2>Error...</h2>
+			{{store.error}}
+		</div>
+
+		<div ng-hide="store.loading || store.error">
+			<div class="monster-search">
+				<input class="search" type="text" ng-model="store.search" placeholder="Search: Enter a Monstername...">
+
+				<ul class="monster-list" ng-show="store.search.length >= 3">
+					<li ng-repeat="monster in store.monsters | byName:store.search | limitTo: 10" ng-click="addMonster(monster)" prevent-default>
+						<img ng-src="http://www.padherder.com{{monster.image60_href}}">
+						<span class="monster-name">{{monster.name}}</span>
+						<span class="btn" ng-click="addMonster(monster)" prevent-default>add</span>
+					</li>
+				</ul>
+			</div>
+
+			<div class="monster-box">
+				<h2 class="narrow">Monster List <span ng-show="store.selected.length > 0">- {{store.selected.length}}</span></h2>
+				<p class="narrow"ng-hide="store.selected.length > 0">
+					Use the search to find monsters to add to your comparison.
+				</p>
+				<ul class="monster-list" ng-show="store.selected.length > 0">
+					<li ng-repeat="monster in store.selected">
+						<img ng-src="http://www.padherder.com{{monster.image60_href}}">
+						<span class="monster-name">{{monster.name}}</span>
+						<span class="btn" ng-click="delMonster(monster)">del</span>
+					</li>
+				</ul>
+			</div>
+
+			<hr class="show-small section-sep">
+
+			<div class="graph-section" ng-show="store.selected.length > 0">
+				<h2 class="narrow">Statistics</h2>
+
+				<span class="graph-container">
+					<h3>ATK</h3>
+					<monster-graph monsters="store.selected" stat="atk"></monster-graph>
+				</span>
+
+				<span class="graph-container">
+					<h3>HP</h3>
+					<monster-graph monsters="store.selected" stat="hp"></monster-graph>
+				</span>
+
+				<span class="graph-container">
+					<h3>RCV</h3>
+					<monster-graph monsters="store.selected" stat="rcv"></monster-graph>
+				</span>
+			</div>
+		</div>
+
+		<div class="cached" ng-show="store.cached">Monster data loaded from cache on {{store.cached*1000 | date:'yyyy-MM-dd HH:mm:ss'}} (<a href="#" ng-click="reload()" prevent-default>click here to refresh</a>)</div>
+		<div class="credits">
+			Images and Puzzle and Dragons are property of GungHo Online Entertainment, Inc. and used without permission.
+
+			Images and Monster data fetched from https://www.padherder.com/ without permission.
+		</div>
+	</div>
+</body>
+</html>
