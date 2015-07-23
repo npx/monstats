@@ -9,7 +9,7 @@ angular.module('App', []).
 /**
  * Handling the Monster information
  */
-service('MonsterDB', function($q, $http) {
+service('MonsterDB', ['$q', '$http', function($q, $http) {
   /**
    * check if local storage is supported in the client's browser
    */
@@ -77,13 +77,13 @@ service('MonsterDB', function($q, $http) {
 
     return loadFromCache().then(onSuccess, onError);
   };
-}).
+}]).
 
 
 /**
  * The MonsterBox that contains the monsters the stats are computed on
  */
-service('MonsterBox', function() {
+service('MonsterBox', [function() {
   this.monsters = [];
 
   this.add = function(monster) {
@@ -96,13 +96,13 @@ service('MonsterBox', function() {
     if (idx > -1)
       this.monsters.splice(idx, 1);
   };
-}).
+}]).
 
 
 /**
  * The Main UI controller
  */
-controller('Main', function($scope, MonsterBox, MonsterDB) {
+controller('Main', ['$scope', 'MonsterBox', 'MonsterDB', function($scope, MonsterBox, MonsterDB) {
   // Expose to the scope
   $scope.store = {
     monsters: [],
@@ -152,14 +152,14 @@ controller('Main', function($scope, MonsterBox, MonsterDB) {
       finally(function () { store.loading = false; });
   };
   loadMonsters();
-}).
+}]).
 
 
 /**
  * Directive that paints a growth graph for a given list of monsters
  */
 // TODO keep track of series and dynamically add and remove them
-directive('monsterGraph', function(Growth) {
+directive('monsterGraph', ['Growth', function(Growth) {
   return {
     restrict: 'E',
     scope: { data: '=monsters', stat: '@' },
@@ -241,13 +241,13 @@ directive('monsterGraph', function(Growth) {
 
     }  // link function end
   };
-}).
+}]).
 
 
 /**
  * Growth computation Service
  */
-service('Growth', function() {
+service('Growth', [function() {
   // the growth function
   var growthFunction = function (Lv, min, max, maxLv, g) {
     return Math.round(min + (max - min) * Math.pow((Lv - 1) / (maxLv - 1), g));
@@ -283,22 +283,22 @@ service('Growth', function() {
     // return the serie
     return stats;
   };
-}).
+}]).
 
 
 /**
  * Utilities
  */
-directive('preventDefault', function() {
+directive('preventDefault', [function() {
   return function(scope, element, attrs) {
     angular.element(element).bind('click', function(event) {
       event.preventDefault();
       event.stopPropagation();
     });
   };
-}).
+}]).
 
-filter('byName', function() {
+filter('byName', [function() {
   return function(monsters, q) {
     if ((!(monsters)) || (!(q)) || (q.length < 3))
       return [];
@@ -306,4 +306,4 @@ filter('byName', function() {
       return m.name.toLowerCase().indexOf(q.toLowerCase()) > -1;
     });
   };
-});
+}]);
