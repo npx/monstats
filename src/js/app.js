@@ -91,7 +91,9 @@ controller('Main', function($scope, MonsterBox, MonsterDB) {
     MonsterBox.add(monster);
     $scope.store.search = "";
   };
-  $scope.delMonster = MonsterBox.del;
+  $scope.delMonster = function(monster) {
+    MonsterBox.del(monster);
+  };
 
   $scope.reload = function() { loadMonsters(true); };
 
