@@ -20,9 +20,12 @@
 	<!-- Load App -->
 	<!-- build:js src/js/dist/monstats.min.js -->
 	<script type="text/javascript" src="src/js/app.js"></script>
+	<script type="text/javascript" src="src/js/graph.js"></script>
+	<script type="text/javascript" src="src/js/services.js"></script>
+	<script type="text/javascript" src="src/js/utils.js"></script>
 	<!-- endbuild -->
 </head>
-<body ng-app="App" ng-controller="Main">
+<body ng-app="Monstats" ng-controller="Main">
 	<div class="content">
 		<div ng-if="store.loading" class="narrow">
 			<h2>Loading...</h2>
