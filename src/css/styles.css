@@ -124,6 +124,9 @@ h3 {
 
 
 /* Search */
+.monster-search {
+	position: relative;
+}
 .monster-search .search {
 	display: block;
 	width: 100%;
@@ -141,6 +144,11 @@ h1, h2 {
 	font-weight: normal;
 }
 .monster-search ul.monster-list {
+	position: absolute;
+	top: 100%;
+	z-index: 100;
+
+	background-color: #FFFFFF;
 	border-bottom: 2px solid #CCCCCC;
 	-webkit-box-shadow: 0 18px 29px -20px rgba(0,0,0,0.75);
 	-moz-box-shadow: 0 18px 29px -20px rgba(0,0,0,0.75);
