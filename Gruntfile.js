@@ -3,6 +3,14 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
 
     /**
+     * Clean the cache busted files
+     */
+    clean: {
+      js: ["src/js/dist/*.*.*.js"],
+      css: ["src/css/*.*.css"]
+    },
+
+    /**
      * Concatenate all source files
      */
     concat: {
@@ -67,6 +75,7 @@ module.exports = function(grunt) {
   /**
    * Tasks
    */
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-copy');
@@ -77,6 +86,6 @@ module.exports = function(grunt) {
   /**
    * Build Target
    */
-  var buildTasks = ['concat', 'uglify', 'copy', 'usemin', 'cacheBust'];
+  var buildTasks = ['clean', 'concat', 'uglify', 'copy', 'usemin', 'cacheBust'];
   grunt.registerTask('build', buildTasks);
 };
