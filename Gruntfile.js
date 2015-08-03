@@ -6,8 +6,8 @@ module.exports = function(grunt) {
      * Clean the cache busted files
      */
     clean: {
-      js: ["src/js/dist/*.*.*.js"],
-      css: ["src/css/*.*.css"]
+      js: ["dist/js/*.*.*.js"],
+      css: ["dist/css/*.*.css"]
     },
 
     /**
@@ -16,7 +16,7 @@ module.exports = function(grunt) {
     concat: {
       options: { separator: '\n' },
       build: {
-        src: ['src/app/*.js'],
+        src: ['src/app/**/*.js'],
         dest: 'dist/js/<%= pkg.name %>.js'
       },
     },
