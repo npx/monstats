@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -o errexit #abort if any command fails
 
-deploy_directory=${GIT_DEPLOY_DIR:-dist}
-deploy_branch=${GIT_DEPLOY_BRANCH:-gh-pages}
+deploy_directory=dist
+deploy_branch=gh-pages
 
 #if no user identity is already set in the current git environment, use this:
 default_username=${GIT_DEPLOY_USERNAME:-deploy.sh}
@@ -61,7 +61,7 @@ function restore_head {
 	else
 		git symbolic-ref HEAD refs/heads/$previous_branch
 	fi
-	
+
 	git reset --mixed
 }
 
