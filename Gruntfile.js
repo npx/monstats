@@ -16,8 +16,8 @@ module.exports = function(grunt) {
     concat: {
       options: { separator: '\n' },
       build: {
-        src: ['src/js/*.js'],
-        dest: 'src/js/dist/<%= pkg.name %>.js'
+        src: ['src/app/*.js'],
+        dest: 'dist/js/<%= pkg.name %>.js'
       },
     },
 
@@ -27,21 +27,22 @@ module.exports = function(grunt) {
      */
     uglify: {
       build: {
-        src: 'src/js/dist/<%= pkg.name %>.js',
-        dest: 'src/js/dist/<%= pkg.name %>.min.js'
+        src: 'dist/js/<%= pkg.name %>.js',
+        dest: 'dist/js/<%= pkg.name %>.min.js'
       }
     },
 
 
     /**
-     * Copy index.dev.html to index.html
+     * Copy files that stay untouched or are modified inplace
      */
     copy: {
       build: {
         files: [
-          { src: 'index.dev.html', dest: 'index.html' }
-        ],
-      },
+          { src: 'src/index.html', dest: 'dist/index.html' },
+          { expand: true, cwd: 'src', src: ['css/*', 'data/*', 'lib/*'], dest: 'dist/' }
+        ]
+      }
     },
 
 
@@ -49,7 +50,7 @@ module.exports = function(grunt) {
      * Update references to minified and concatenated resources
      */
     usemin: {
-      build: ['index.html']
+      build: ['dist/index.html']
     },
 
 
@@ -65,7 +66,7 @@ module.exports = function(grunt) {
       },
       build: {
         files: [
-          { src: ['index.html'] }
+          { src: ['dist/index.html'] }
         ]
       }
     }
