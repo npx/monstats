@@ -1,26 +1,6 @@
 angular.module('monstats.services').
 
 
-
-/**
- * The MonsterBox that contains the monsters the stats are computed on
- */
-service('MonsterBox', [function() {
-  this.monsters = [];
-
-  this.add = function(monster) {
-    if (this.monsters.indexOf(monster) < 0)
-      this.monsters.push(monster);
-  };
-
-  this.del = function(monster) {
-    var idx = this.monsters.indexOf(monster);
-    if (idx > -1)
-      this.monsters.splice(idx, 1);
-  };
-}]).
-
-
 /**
  * Growth computation Service
  */
