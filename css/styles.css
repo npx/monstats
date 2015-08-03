@@ -1,0 +1,211 @@
+html {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+html, body {
+	margin: 0;
+	height: 100%;
+	font-size: 16px;
+	font-family: Helvetica, Arial, sans-serif;
+}
+*, *:before, *:after {
+	-webkit-box-sizing: inherit;
+	-moz-box-sizing: inherit;
+	box-sizing: inherit;
+}
+.content {
+	min-height: 100%;
+	padding-bottom: 65px;
+	position: relative;
+	overflow: auto;
+	text-align: center;
+}
+.credits {
+	font-size: 10px;
+	position:absolute;
+	bottom:0;
+	height: 49px;
+	padding: 5px;
+	text-align: center;
+	border-top: 1px solid #EFEFEF;
+	width: 100%;
+}
+.cached {
+	font-size: 10px;
+	position: absolute;
+	bottom: 50px;
+	height: 15px;
+	text-align: center;
+	width: 100%;
+}
+
+/* Utility */
+.btn {
+	width: 30px;
+	height: 30px;
+	background-color: #CCCCCC;
+	border-radius: 5px;
+	color: #FFFFFF;
+	line-height: 30px;
+	font-size: 14px;
+	text-align: center;
+	font-family: Helvetica, Arial, sans-serif;
+	cursor: pointer;
+}
+.btn:hover { background-color: #AAAAAA; }
+
+
+ul.monster-list {
+	padding: 0;
+	margin: 0;
+}
+ul.monster-list > li {
+	display: inline-block;
+	position: relative;
+	vertical-align: middle;
+
+	width: 100%;
+	height: 40px;
+
+	line-height: 30px;
+
+	padding: 5px 50px;
+	text-align: left;
+}
+ul.monster-list > li > .monster-name {
+	font-size: 13px;
+	line-height: 13px;
+
+	display: inline-block;
+	vertical-align: middle;
+}
+
+ul.monster-list > li > img {
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	left: 10px;
+	top: 5px;
+}
+ul.monster-list > li > .btn {
+	position: absolute;
+	right: 10px;
+	top: 5px;
+}
+
+
+/* Page */
+.narrow { padding: 0 10px; }
+.graph-section, .monster-box { text-align: center; }
+.section-sep {
+	width: 300px;
+	border: 0;
+    height: 1px;
+    background: #CCCCCC;
+	margin: 25px auto;
+}
+.graph-container {
+	display: inline-block;
+	width: 90%;
+	position: relative;
+	margin: 0 0 30px 0;
+}
+h3 {
+	padding: 10px;
+	display: block;
+	border: 1px solid #CCCCCC;
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
+	-moz-box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
+	box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
+	margin: 5px;
+}
+
+
+/* Search */
+.monster-search {
+	position: relative;
+}
+.monster-search .search {
+	display: block;
+	width: 100%;
+	font-size: 16px;
+	padding: 10px;
+	border: none;
+	border-bottom: 2px solid #CCCCCC;
+	background-color: #EEEEEE;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	border-radius: 0;
+}
+
+h1, h2 {
+	font-weight: normal;
+}
+.monster-search ul.monster-list {
+	position: absolute;
+	top: 100%;
+	z-index: 100;
+
+	background-color: #FFFFFF;
+	border-bottom: 2px solid #CCCCCC;
+	-webkit-box-shadow: 0 18px 29px -20px rgba(0,0,0,0.75);
+	-moz-box-shadow: 0 18px 29px -20px rgba(0,0,0,0.75);
+	box-shadow: 0 18px 29px -20px rgba(0,0,0,0.75);
+}
+.monster-search ul.monster-list > li {
+	background-color: #EEEEEE;
+	border-top: 1px solid #CCCCCC;
+	cursor: pointer;
+}
+.monster-search ul.monster-list > li:hover {
+	background-color: #E9E9E9;
+}
+.monster-search ul.monster-list > li:first-child { border: none; }
+
+@media (max-width: 600px) { .hide-small { display: none; } }
+@media (min-width: 601px) { .show-small { display: none; } }
+@media (min-width: 600px) {
+	.graph-container {
+		max-width: 380px;
+		margin: 0 20px 20px 20px;
+		border: 1px solid #CCCCCC;
+		border-radius: 15px;
+		padding: 10px;
+		-webkit-box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
+		-moz-box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
+		box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
+	}
+
+	h3 {
+		padding: 10px;
+		display: block;
+		border: none;
+
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		box-shadow: none;
+		margin: 0;
+	}
+
+	ul.monster-list {
+		text-align: center;
+		vertical-align: top;
+	}
+	ul.monster-list > li {
+		text-align: left;
+		width: 300px;
+		border: 1px solid #CCCCCC;
+		border-radius: 5px;
+		margin: 5px;
+		padding: 10px 50px;
+		height: 50px;
+	}
+	.monster-search ul.monster-list > li:first-child {
+		border: 1px solid #CCCCCC;
+	}
+	ul.monster-list > li > img, ul.monster-list > li > .btn {
+		top: 10px;
+	}
+}
