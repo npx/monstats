@@ -15,7 +15,7 @@
         vm.error = null;
         vm.loading = true;
         vm.monsters = [];
-        vm.search = "";
+        vm.search = '';
         vm.selected = MonsterBox.monsters;
 
         vm.addMonster = addMonster;
@@ -27,38 +27,38 @@
         activate();
 
         function activate() {
-          loadMonsters();
+            loadMonsters();
         }
 
         function addMonster(monster) {
-          MonsterBox.add(monster);
-          vm.search = "";
+            MonsterBox.add(monster);
+            vm.search = '';
         }
 
         function delMonster(monster) {
-          MonsterBox.del(monster);
+            MonsterBox.del(monster);
         }
 
         function loadMonsters(force) {
-          // response handling
-          var success = function(res) {
-            vm.monsters = res.monsters;
-            if ('cached' in res) vm.cached = res.cached;
-          };
-          var error = function(err) { vm.error = "Cannot load Monster DB :c"; };
+            // response handling
+            function success(res) {
+                vm.monsters = res.monsters;
+                if ('cached' in res) vm.cached = res.cached;
+            }
+            function error(err) { vm.error = 'Cannot load Monster DB :c'; }
 
-          // move
-          vm.cached = null;
-          vm.error = null;
-          vm.loading = true;
+            // move
+            vm.cached = null;
+            vm.error = null;
+            vm.loading = true;
 
-          // load normally or force reload
-          var loadingMethod = force ? MonsterDB.forceLoad() : MonsterDB.load();
+            // load normally or force reload
+            var method = force ? MonsterDB.forceLoad() : MonsterDB.load();
 
-          // attach handlers
-          loadingMethod.
-            then(success, error).
-            finally(function () { vm.loading = false; });
+            // attach handlers
+            method.
+                then(success, error).
+                finally(function () { vm.loading = false; });
         }
 
         function reload() {
