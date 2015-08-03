@@ -1,7 +1,7 @@
 /**
  * Monstats - Graph
  */
-angular.module('monstats-graph', ['monstats-services']).
+angular.module('monstats.graph', ['monstats.services']).
 
 
 /**

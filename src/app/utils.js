@@ -1,7 +1,7 @@
 /**
  * Monstats - Utilities
  */
-angular.module('monstats-utils', []).
+angular.module('monstats.utils', []).
 
 
 directive('preventDefault', [function() {

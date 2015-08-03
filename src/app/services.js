@@ -1,4 +1,4 @@
-angular.module('monstats-services', []).
+angular.module('monstats.services', []).
 
 
 /**

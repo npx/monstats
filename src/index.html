@@ -6,7 +6,7 @@
 
 	<title>MonStats - A puzzle and dragons monster stat comparison tool (beta)</title>
 
-	<link rel="stylesheet" type="text/css" media="screen" href="src/css/styles.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="css/styles.css" />
 
 	<!-- Load Libraries -->
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
@@ -19,74 +19,75 @@
 
 	<!-- Load App -->
 	<!-- build:js src/js/dist/monstats.min.js -->
-	<script type="text/javascript" src="src/js/app.js"></script>
-	<script type="text/javascript" src="src/js/graph.js"></script>
-	<script type="text/javascript" src="src/js/services.js"></script>
-	<script type="text/javascript" src="src/js/utils.js"></script>
+	<script type="text/javascript" src="app/app.module.js"></script>
+	<script type="text/javascript" src="app/app.controller.js"></script>
+	<script type="text/javascript" src="app/graph.js"></script>
+	<script type="text/javascript" src="app/services.js"></script>
+	<script type="text/javascript" src="app/utils.js"></script>
 	<!-- endbuild -->
 </head>
-<body ng-app="Monstats" ng-controller="Main">
+<body ng-app="Monstats" ng-controller="AppController as vm">
 	<div class="content">
-		<div ng-if="store.loading" class="narrow">
+		<div ng-if="vm.loading" class="narrow">
 			<h2>Loading...</h2>
 			Please be patient while the monster database is being fetched :3
 		</div>
 
-		<div ng-if="store.error" class="narrow">
+		<div ng-if="vm.error" class="narrow">
 			<h2>Error...</h2>
-			{{store.error}}
+			{{vm.error}}
 		</div>
 
-		<div ng-hide="store.loading || store.error">
+		<div ng-hide="vm.loading || vm.error">
 			<div class="monster-search">
-				<input class="search" type="text" ng-model="store.search" placeholder="Search: Enter a Monstername...">
+				<input class="search" type="text" ng-model="vm.search" placeholder="Search: Enter a Monstername...">
 
-				<ul class="monster-list" ng-show="store.search.length >= 3">
-					<li ng-repeat="monster in store.monsters | byName:store.search | limitTo: 10" ng-click="addMonster(monster)" prevent-default>
+				<ul class="monster-list" ng-show="vm.search.length >= 3">
+					<li ng-repeat="monster in vm.monsters | byName:vm.search | limitTo: 10" ng-click="vm.addMonster(monster)" prevent-default>
 						<img ng-src="http://www.padherder.com{{monster.image60_href}}">
 						<span class="monster-name">{{monster.name}}</span>
-						<span class="btn" ng-click="addMonster(monster)" prevent-default>add</span>
+						<span class="btn" ng-click="vm.addMonster(monster)" prevent-default>add</span>
 					</li>
 				</ul>
 			</div>
 
 			<div class="monster-box">
-				<h2 class="narrow">Monster List <span ng-show="store.selected.length > 0">- {{store.selected.length}}</span></h2>
-				<p class="narrow"ng-hide="store.selected.length > 0">
+				<h2 class="narrow">Monster List <span ng-show="vm.selected.length > 0">- {{vm.selected.length}}</span></h2>
+				<p class="narrow"ng-hide="vm.selected.length > 0">
 					Use the search to find monsters to add to your comparison.
 				</p>
-				<ul class="monster-list" ng-show="store.selected.length > 0">
-					<li ng-repeat="monster in store.selected">
+				<ul class="monster-list" ng-show="vm.selected.length > 0">
+					<li ng-repeat="monster in vm.selected">
 						<img ng-src="http://www.padherder.com{{monster.image60_href}}">
 						<span class="monster-name">{{monster.name}}</span>
-						<span class="btn" ng-click="delMonster(monster)">del</span>
+						<span class="btn" ng-click="vm.delMonster(monster)">del</span>
 					</li>
 				</ul>
 			</div>
 
 			<hr class="show-small section-sep">
 
-			<div class="graph-section" ng-show="store.selected.length > 0">
+			<div class="graph-section" ng-show="vm.selected.length > 0">
 				<h2 class="narrow">Statistics</h2>
 
 				<span class="graph-container">
 					<h3>ATK</h3>
-					<monster-graph monsters="store.selected" stat="atk"></monster-graph>
+					<monster-graph monsters="vm.selected" stat="atk"></monster-graph>
 				</span>
 
 				<span class="graph-container">
 					<h3>HP</h3>
-					<monster-graph monsters="store.selected" stat="hp"></monster-graph>
+					<monster-graph monsters="vm.selected" stat="hp"></monster-graph>
 				</span>
 
 				<span class="graph-container">
 					<h3>RCV</h3>
-					<monster-graph monsters="store.selected" stat="rcv"></monster-graph>
+					<monster-graph monsters="vm.selected" stat="rcv"></monster-graph>
 				</span>
 			</div>
 		</div>
 
-		<div class="cached" ng-show="store.cached">Monster data loaded from cache on {{store.cached*1000 | date:'yyyy-MM-dd HH:mm:ss'}} (<a href="#" ng-click="reload()" prevent-default>click here to refresh</a>)</div>
+		<div class="cached" ng-show="vm.cached">Monster data loaded from cache on {{vm.cached*1000 | date:'yyyy-MM-dd HH:mm:ss'}} (<a href="#" ng-click="vm.reload()" prevent-default>click here to refresh</a>)</div>
 		<div class="credits">
 			Images and Puzzle and Dragons are property of GungHo Online Entertainment, Inc. and used without permission.
 
