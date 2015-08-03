@@ -17,7 +17,11 @@
             controller: GraphController,
             controllerAs: 'vm',
             bindToController: true,
-            templateUrl: 'app/graph/graph.html',
+            template:
+                '<div>' +
+                '  <div></div>' +
+                '  <serie ng-repeat="mon in vm.monsters" monster="mon" />' +
+                '</div>',
             scope: { monsters: '=', stat: '@' },
             replace: true,
             link: linkFunc
@@ -118,6 +122,5 @@
                 credits: false
             });
         }
-
     }
 })();
